@@ -46,7 +46,9 @@ function prepareRoomListeners(room, joinType) {
   room.onStateChange((state) => {
     console.log('Updated State:', JSON.stringify(state, null, 2));
     if (state.gameStateHandler.isGameOver) {
-      alert(`The Winner Is Player ${state.gameStateHandler.winner === 'D' ? 'DRAW' : state.gameStateHandler.winner}`);
+      alert(
+          `The Winner Is Player ${state.gameStateHandler.winner === 'D' ? 'DRAW'
+              : state.gameStateHandler.winner}`);
     }
     setGrid(state.gameStateHandler.grid);
   });

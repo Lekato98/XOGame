@@ -18,7 +18,8 @@ export class GameStateHandler extends Schema {
   }
 
   move(value, cellId) {
-    if (this.isGameOver === false && value === this.turn && this.grid[cellId] === DEFAULT_GRID_VALUE) {
+    if (this.isGameOver === false && value === this.turn && this.grid[cellId]
+        === DEFAULT_GRID_VALUE) {
       this.grid[cellId] = value;
       if (this.checkIsGameOver() === true) {
 
@@ -56,6 +57,7 @@ export class GameStateHandler extends Schema {
 
     this.turn = DEFAULT_TURN;
     this.isGameOver = true;
+    setTimeout(() => this.refreshGameStateHandler(), 500);
   }
 
   toggleTurn() {

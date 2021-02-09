@@ -1,5 +1,5 @@
-import { Schema, defineTypes } from '@colyseus/schema';
-import { PrivatePlayerState } from './PrivatePlayerState.mjs';
+import {defineTypes, Schema} from '@colyseus/schema';
+import {PrivatePlayerState} from './PrivatePlayerState.mjs';
 
 const ERROR_NO_SPACE = 'NO SPACE';
 const ERROR_UNKNOWN_PLAYER = 'UNKNOWN PLAYER';
@@ -46,4 +46,4 @@ defineTypes(PrivateGameState, {
   yPlayer: PrivatePlayerState,
 });
 
-export { PrivateGameState };
+export {PrivateGameState};

@@ -1,4 +1,4 @@
-import { Schema, defineTypes } from '@colyseus/schema';
+import {defineTypes, Schema} from '@colyseus/schema';
 
 class SpectatorState extends Schema {
   constructor(name) {
@@ -19,4 +19,4 @@ defineTypes(SpectatorState, {
   name: 'string',
 });
 
-export { SpectatorState };
+export {SpectatorState};

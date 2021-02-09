@@ -1,15 +1,14 @@
-import { createServer } from 'http';
-import express, { json } from 'express';
+import {createServer} from 'http';
+import express, {json} from 'express';
 import cors from 'cors';
 
-import { Server } from 'colyseus';
-import { monitor } from '@colyseus/monitor';
+import {Server} from 'colyseus';
+import {monitor} from '@colyseus/monitor';
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import { XORoom } from './rooms/XORoom.mjs';
-import { redisClient } from './utils/redis.mjs';
+import path, {dirname} from 'path';
+import {fileURLToPath} from 'url';
+import {XORoom} from './rooms/XORoom.mjs';
+import {redisClient} from './utils/redis.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

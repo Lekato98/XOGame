@@ -1,4 +1,4 @@
-import { Schema, defineTypes } from '@colyseus/schema';
+import {defineTypes, Schema} from '@colyseus/schema';
 
 const UPDATE_STATE = 'UPDATE_STATE';
 
@@ -35,7 +35,7 @@ class PrivatePlayerState extends Schema {
   }
 
   updateState() {
-    this.client.send(UPDATE_STATE, { counter: this.counter });
+    this.client.send(UPDATE_STATE, {counter: this.counter});
   }
 }
 
@@ -44,4 +44,4 @@ defineTypes(PrivatePlayerState, {
   name: 'string',
 });
 
-export { PrivatePlayerState };
+export {PrivatePlayerState};

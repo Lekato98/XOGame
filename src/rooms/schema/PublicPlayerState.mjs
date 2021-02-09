@@ -1,4 +1,4 @@
-import { Schema, defineTypes } from '@colyseus/schema';
+import {defineTypes, Schema} from '@colyseus/schema';
 
 class PublicPlayerState extends Schema {
   constructor(sessionId, name) {
@@ -33,4 +33,4 @@ defineTypes(PublicPlayerState, {
   name: 'string',
 });
 
-export { PublicPlayerState };
+export {PublicPlayerState};

@@ -50,7 +50,7 @@ class GameState extends Schema {
   moveController(client, cellId) {
     if (this.xPlayer.equals(client.sessionId)) {
       if (this.gameStateHandler.move(X_PLAYER_VALUE, cellId) === false) {
-        if(this.gameStateHandler.isGameOver) {
+        if (this.gameStateHandler.isGameOver) {
           client.send(ERROR_MESSAGE, ERROR_GAME_IS_OVER);
         } else {
           client.send(ERROR_MESSAGE, ERROR_INVALID_MOVE);
@@ -58,7 +58,7 @@ class GameState extends Schema {
       }
     } else if (this.oPlayer.equals(client.sessionId)) {
       if (this.gameStateHandler.move(O_PLAYER_VALUE, cellId) === false) {
-        if(this.gameStateHandler.isGameOver) {
+        if (this.gameStateHandler.isGameOver) {
           client.send(ERROR_MESSAGE, ERROR_GAME_IS_OVER);
         } else {
           client.send(ERROR_MESSAGE, ERROR_INVALID_MOVE);
