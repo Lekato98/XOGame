@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "xogame",
+  "version": "1.0.0",
+  "description": "npm init template for bootstrapping an empty Colyseus project",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "nodemon src/index.mjs",
+    "loadtest": "colyseus-loadtest loadtest/example.js --room my_room --numClients 2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colyseus/create-colyseus/issues"
+  },
+  "homepage": "https://github.com/colyseus/create-colyseus#readme",
+  "devDependencies": {
+    "@colyseus/loadtest": "^0.14.0",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "@colyseus/monitor": "^0.12.2",
+    "@colyseus/social": "^0.10.9",
+    "colyseus": "^0.14.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.5",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "redis": "^3.0.2"
+  }
+}
