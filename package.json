@@ -5,7 +5,7 @@
   "description": "npm init template for bootstrapping an empty Colyseus project",
   "main": "index.mjs",
   "scripts": {
-    "start": "nodemon src/index.mjs",
+    "start": "node src/index.mjs",
     "loadtest": "colyseus-loadtest loadtest/example.js --room my_room --numClients 2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
