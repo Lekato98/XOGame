@@ -1,92 +1,59 @@
 const client = new Colyseus.Client('ws://localhost:2567');
 const createBtn = document.querySelector('#create');
 const joinBtn = document.querySelector('#join');
+const rematchBtn = document.querySelector('#rematch');
 
 const MOVE = 'MOVE';
+const REMATCH = 'REMATCH';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
 
-createBtn.addEventListener('click', createGame);
+createBtn.addEventListener('click', create);
 joinBtn.addEventListener('click', joinGame);
 
-async function createGame(event) {
-  const res = await fetch('/lekato', {
-    headers: {'Content-Type': 'application/json'},
-    method: 'GET',
-  });
+async function create() {
+  try {
+    const username = window.prompt('Enter your username plz', 'username');
+    const type = window.prompt('Join as (Player, Spectator)',
+        'PLAYER').toUpperCase();
+    const info = {
+      username: username,
+      type: type
+    };
 
-  const data = await res.json();
-  const joinType = window
-  .prompt('Join as (PLAYER, SPECTATOR)', 'PLAYER')
-  .toUpperCase();
+    let get = await fetch("/game/create", {
+      headers: {'Content-Type': 'application/json'},
+      method: 'POST',
+      body: JSON.stringify(info),
+    });
 
-  const room = await client.create('XORoom', {type: joinType});
+    const {roomId} = await get.json();
 
-  prepareRoomListeners(room, joinType);
-}
-
-async function joinGame(event) {
-  const room_id = document.querySelector('#room_id');
-  const joinType = window
-  .prompt('Join as (PLAYER, SPECTATOR)', 'PLAYER')
-  .toUpperCase();
-  const room = await client.joinById(room_id.value, {type: joinType});
-  prepareRoomListeners(room, joinType);
-}
-
-function prepareRoomListeners(room, joinType) {
-  room.onStateChange.once((state) => {
-    console.log('First State: ', JSON.stringify(state, null, 2));
-    setGrid(state.gameStateHandler.grid);
-  });
-
-  room.onLeave((code) => {
-    console.log('Client Leave Code: ' + code);
-  });
-
-  room.onStateChange((state) => {
-    console.log('Updated State:', JSON.stringify(state, null, 2));
-    if (state.gameStateHandler.isGameOver) {
-      alert(
-          `The Winner Is Player ${state.gameStateHandler.winner === 'D' ? 'DRAW'
-              : state.gameStateHandler.winner}`);
-    }
-    setGrid(state.gameStateHandler.grid);
-  });
-
-  room.onError((code, message) => {
-    console.log('Error Code: ', code);
-    console.log(message);
-  });
-
-  room.onMessage(ERROR_MESSAGE, (message) => {
-    alert(message);
-  });
-
-  room.onMessage('SERVER', (message) => {
-    alert(message);
-  });
-
-  room.onMessage('UPDATE_STATE', (message) => {
-    alert(JSON.stringify(message, null, 2));
-  });
-
-  if (joinType == 'PLAYER') {
-    gridCell(room);
+    window.location.replace(`/game/${roomId}`);
+  } catch (err) {
+    console.log(err);
   }
 }
 
-function gridCell(room) {
-  const cells = Array.from(document.querySelectorAll('td'));
-  cells.map((cell, index) => {
-    cell.addEventListener('click', (e) => {
-      room.send(MOVE, {cell_id: index});
-    });
-  });
-}
+async function joinGame(event) {
+  try {
+    const username = window.prompt('Enter your username plz', 'username');
+    const type = window.prompt('Join as (Player, Spectator)',
+        'PLAYER').toUpperCase();
 
-function setGrid(grid) {
-  const cells = Array.from(document.querySelectorAll('td'));
-  cells.map((cell, index) => {
-    cell.innerText = grid[index];
-  });
+    const room_id = document.querySelector('#room_id').value;
+    const info = {
+      username: username,
+      type: type
+    };
+    let get = await fetch(`/game/join/${room_id}`, {
+      headers: {'Content-Type': 'application/json'},
+      method: 'POST',
+      body: JSON.stringify(info),
+    });
+
+    const {roomId} = await get.json();
+    window.location.replace(`/game/${roomId}`);
+  } catch (err) {
+    console.error(err);
+  }
 }

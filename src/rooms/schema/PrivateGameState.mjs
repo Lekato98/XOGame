@@ -1,5 +1,7 @@
-import {defineTypes, Schema} from '@colyseus/schema';
+import {ArraySchema, defineTypes, Schema} from '@colyseus/schema';
 import {PrivatePlayerState} from './PrivatePlayerState.mjs';
+
+const MAX_NUM_OF_PLAYERS = 2;
 
 const ERROR_NO_SPACE = 'NO SPACE';
 const ERROR_UNKNOWN_PLAYER = 'UNKNOWN PLAYER';
@@ -8,42 +10,44 @@ const ERROR_MESSAGE = 'ERROR_MESSAGE';
 class PrivateGameState extends Schema {
   constructor() {
     super();
-    this.xPlayer = null;
-    this.oPlayer = null;
+    this.refreshPrivateGameState();
   }
 
   joinGame(client, name) {
-    if (this.xPlayer === null) {
-      this.xPlayer = new PrivatePlayerState(client, name);
-    } else if (this.oPlayer === null) {
-      this.oPlayer = new PrivatePlayerState(client, name);
-    } else {
+    if(this.isFull() === true) {
       client.send(ERROR_MESSAGE, ERROR_NO_SPACE);
+    } else {
+      this.players.push(new PrivateGameState(client, name));
     }
   }
 
   leaveGame(client) {
-    if (this.xPlayer.equals(client)) {
-      this.xPlayer = null;
-    } else if (this.oPlayer.equals(client)) {
-      this.oPlayer = null;
-    } else {
+    const position = this.getPlayerPosition(client);
+
+    if (position === -1) {
       client.send(ERROR_MESSAGE, ERROR_UNKNOWN_PLAYER);
+    } else {
+      this.players.splice(position, 1);
     }
   }
 
-  getXPlayer() {
-    return this.xPlayer;
+  getPlayerPosition(client) {
+    return this.players.find(player => player.sessionId === client.sessionId);
   }
 
-  getOPlayer() {
-    return this.oPlayer;
+  isFull() {
+    return this.numOfPlayers === this.maxNumOfPlayers;
+  }
+
+  refreshPrivateGameState() {
+    this.maxNumOfPlayers = MAX_NUM_OF_PLAYERS;
+    this.numOfPlayers = 0;
+    this.players = new ArraySchema();
   }
 }
 
 defineTypes(PrivateGameState, {
-  xPlayer: PrivatePlayerState,
-  yPlayer: PrivatePlayerState,
+  players: [PrivatePlayerState],
 });
 
 export {PrivateGameState};

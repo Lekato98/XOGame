@@ -17,14 +17,19 @@ export class GameStateHandler extends Schema {
     this.refreshGameStateHandler();
   }
 
+  moveValidation(value, cellId) {
+    return cellId > -1 && cellId < DEFAULT_GRID_SIZE &&
+        this.isGameOver === false &&
+        value === this.turn && this.grid[cellId] === DEFAULT_GRID_VALUE;
+  }
+
   move(value, cellId) {
-    if (this.isGameOver === false && value === this.turn && this.grid[cellId]
-        === DEFAULT_GRID_VALUE) {
+    if (this.moveValidation(value, cellId) === true) {
       this.grid[cellId] = value;
       if (this.checkIsGameOver() === true) {
-
+        // do something ...
       } else {
-        this.toggleTurn();
+        this.nextTurn();
       }
 
       return true; // valid move
@@ -57,16 +62,15 @@ export class GameStateHandler extends Schema {
 
     this.turn = DEFAULT_TURN;
     this.isGameOver = true;
-    setTimeout(() => this.refreshGameStateHandler(), 500);
   }
 
-  toggleTurn() {
+  nextTurn() {
     if (this.turn === X_PLAYER_VALUE) {
       this.turn = O_PLAYER_VALUE;
     } else if (this.turn === O_PLAYER_VALUE) {
       this.turn = X_PLAYER_VALUE;
     } else {
-      this.turn = DEFAULT_TURN;
+      this.turn = X_PLAYER_VALUE;
     }
   }
 
@@ -82,7 +86,7 @@ export class GameStateHandler extends Schema {
   }
 
   checkCols() {
-    for (let i = 0; i < 7; i += 3) {
+    for (let i = 0; i < 3; i++) {
       if (this.grid[i] !== DEFAULT_GRID_VALUE && this.grid[i] === this.grid[i
       + 3] && this.grid[i] === this.grid[i + 6]) {
         return true;
@@ -111,7 +115,7 @@ export class GameStateHandler extends Schema {
     this.result = '';
     this.winner = '';
     this.isGameOver = false;
-    this.turn = DEFAULT_TURN;
+    this.turn = X_PLAYER_VALUE;
     this.resetGrid(DEFAULT_GRID_VALUE, DEFAULT_GRID_SIZE);
   }
 

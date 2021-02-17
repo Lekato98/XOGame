@@ -17,11 +17,14 @@
   "homepage": "https://github.com/colyseus/create-colyseus#readme",
   "devDependencies": {
     "@colyseus/loadtest": "^0.14.0",
+    "@colyseus/schema": "^1.0.12",
     "nodemon": "^2.0.7"
   },
   "dependencies": {
     "@colyseus/monitor": "^0.12.2",
     "@colyseus/social": "^0.10.9",
+    "async-redis": "^1.1.7",
+    "body-parser": "^1.19.0",
     "colyseus": "^0.14.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.5",

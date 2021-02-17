@@ -22,6 +22,10 @@ function RECONNECTED(ROOM_NAME) {
   console.log(`~RECONNECTED ROOM[${ROOM_NAME}]`);
 }
 
+function RESERVING(ROOM_NAME) {
+  console.log(`~RESERVING ROOM[${ROOM_NAME}]`);
+}
+
 function FAILED(ROOM_NAME) {
   console.log(`~FAILED_TO_RECONNECT ROOM[${ROOM_NAME}]`);
 }
@@ -41,6 +45,7 @@ export {
   JOINED,
   RECONNECT,
   RECONNECTED,
+  RESERVING,
   FAILED,
   LEFT,
   REMOVED,

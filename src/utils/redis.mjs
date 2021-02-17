@@ -1,10 +1,9 @@
-import redis from 'redis';
+import redis from 'async-redis';
 
 export function connectRedis() {
   const client = redis.createClient();
 
   client.on('error', (error) => {
-    console.log('lalu');
     console.error(error);
   });
 
