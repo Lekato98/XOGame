@@ -26,9 +26,9 @@ async function create() {
       body: JSON.stringify(info),
     });
 
-    const {roomId} = await get.json();
+    const {seat} = await get.json();
 
-    window.location.replace(`/game/${roomId}`);
+    window.location.replace(`/game/${seat.room.roomId}`);
   } catch (err) {
     console.log(err);
   }
@@ -51,8 +51,8 @@ async function joinGame(event) {
       body: JSON.stringify(info),
     });
 
-    const {roomId} = await get.json();
-    window.location.replace(`/game/${roomId}`);
+    const {seat} = await get.json();
+    window.location.replace(`/game/${seat.room.roomId}`);
   } catch (err) {
     console.error(err);
   }
