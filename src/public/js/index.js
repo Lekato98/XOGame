@@ -1,4 +1,5 @@
-const client = new Colyseus.Client('ws://localhost:2567');
+const host = window.document.location.host.replace(/:.*/, '');
+const client = new Colyseus.Client(location.protocol.replace("http", "ws") + "//" + host + (location.port ? ':' + location.port : ''));
 const createBtn = document.querySelector('#create');
 const joinBtn = document.querySelector('#join');
 const rematchBtn = document.querySelector('#rematch');
