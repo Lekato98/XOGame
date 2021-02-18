@@ -1,7 +1,7 @@
 import redis from 'async-redis';
 
 export function connectRedis() {
-  const client = redis.createClient({host: process.env.REDIS_URI});
+  const client = redis.createClient(process.env.REDIS_URL);
 
   client.on('error', (error) => {
     console.error(error);

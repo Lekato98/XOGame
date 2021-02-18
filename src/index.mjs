@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config({ silent: process.env.NODE_ENV === 'production' });
-
 import {createServer} from 'http';
 import path, {dirname} from 'path';
 import {fileURLToPath} from 'url';
