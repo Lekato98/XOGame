@@ -20,6 +20,7 @@ async function joinGame(event) {
     );
 
     const {roomId, sessionId, joinType} = await res.json();
+    console.log(roomId, sessionId, joinType);
     const room = await client.reconnect(roomId, sessionId);
     prepareRoomListeners(room, joinType);
   } catch (err) {
