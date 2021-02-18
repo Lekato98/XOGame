@@ -6,14 +6,13 @@ const IN_GAME = 'IN_GAME';
 const createGame = async (req, res) => {
   const {username, type} = req.body;
   try {
-    const {room, sessionId} = await matchMaker.create('XORoom',
+    const seat = await matchMaker.create('XORoom',
         {type: type});
-    await matchMaker.remoteRoomCall(room.roomId, 'onReserve', [sessionId]);
+    await matchMaker.remoteRoomCall(seat.room.roomId, 'onReserve', [seat.sessionId]);
 
     const userData = {
       status: IN_GAME,
-      roomId: room.roomId,
-      sessionId: sessionId,
+      seat: seat,
       joinType: type,
     };
 
@@ -43,15 +42,14 @@ const joinGame = async (req, res) => {
       console.log('NO SPACE');
     } else {
       const roomId = availableRooms[roomIndex].roomId;
-      const {room, sessionId} = await matchMaker.joinById(roomId,
+      const seat = await matchMaker.joinById(roomId,
           {type: type});
 
-      await matchMaker.remoteRoomCall(room.roomId, 'onReserve', [sessionId]);
+      await matchMaker.remoteRoomCall(seat.room.roomId, 'onReserve', [seat.sessionId]);
 
       const userData = {
         status: IN_GAME,
-        roomId: room.roomId,
-        sessionId: sessionId,
+        seat: seat,
         joinType: type,
       }
 
@@ -75,15 +73,15 @@ const joinGameById = async (req, res) => {
         [type]);
 
     if (isFull === false) {
-      const {room, sessionId} = await matchMaker.joinById(roomId,
+      const seat = await matchMaker.joinById(roomId,
           {type: type});
 
-      await matchMaker.remoteRoomCall(room.roomId, 'onReserve', [sessionId]);
+      await matchMaker.remoteRoomCall(seat.room.roomId, 'onReserve',
+          [seat.sessionId]);
 
       const userData = {
         status: IN_GAME,
-        roomId: room.roomId,
-        sessionId: sessionId,
+        seat: seat,
         joinType: type,
       }
 

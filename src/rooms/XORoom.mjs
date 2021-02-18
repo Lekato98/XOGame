@@ -9,10 +9,10 @@ import {
   LEFT,
   RECONNECT,
   RECONNECTED,
-  REMOVED, RESERVING,
+  REMOVED,
+  RESERVING,
   UNAUTHORIZED,
 } from '../utils/logs.mjs';
-import {redisClient} from "../utils/redis.mjs";
 
 const ROOM_NAME = 'XORoom';
 
@@ -70,8 +70,9 @@ export class XORoom extends Room {
         RECONNECTED(this.ROOM_NAME);
         return;
       } catch (err) {
-        if(err !== false)
+        if (err !== false) {
           console.error(err);
+        }
         FAILED(this.ROOM_NAME);
       }
     }
@@ -83,9 +84,9 @@ export class XORoom extends Room {
   }
 
   isFull(type) {
-    if(type === PLAYER) {
+    if (type === PLAYER) {
       return this.state.isFullPlayers();
-    } else if(type === SPECTATOR) {
+    } else if (type === SPECTATOR) {
       return this.state.isFullSpectators();
     }
 

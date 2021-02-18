@@ -14,7 +14,7 @@ class PrivateGameState extends Schema {
   }
 
   joinGame(client, name) {
-    if(this.isFull() === true) {
+    if (this.isFull() === true) {
       client.send(ERROR_MESSAGE, ERROR_NO_SPACE);
     } else {
       this.players.push(new PrivateGameState(client, name));

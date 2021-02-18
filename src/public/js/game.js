@@ -6,23 +6,26 @@ const MOVE = 'MOVE';
 const REMATCH = 'REMATCH';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
 
-async function joinGame() {
+async function joinGame(event) {
   try {
     const username = window.prompt('Enter your username', 'username');
     const res = await fetch(`/player/${username}`, {
           headers: {
-            'Content-Type': 'application/json'
-          },
+            'Content-Type':
+                'application/json'
+          }
+          ,
           method: 'GET',
         }
     );
 
-    const {roomId, sessionId, joinType} = await res.json();
+    const {seat, joinType} = await res.json();
+    console.log(seat);
+    const room = await client.consumeSeatReservation(seat);
 
-    const room = await client.reconnect(roomId, sessionId);
     prepareRoomListeners(room, joinType);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
