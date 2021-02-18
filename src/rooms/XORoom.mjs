@@ -1,6 +1,5 @@
 import {Room} from 'colyseus';
 import {GameState} from './schema/GameState.mjs';
-import {PrivateGameState} from './schema/PrivateGameState.mjs';
 import {
   AUTHORIZED,
   CREATED,
@@ -31,7 +30,6 @@ export class XORoom extends Room {
     this.ROOM_NAME = ROOM_NAME + `#${this.roomId}`;
 
     this.setState(new GameState()); // Public Game State
-    this.privateState = new PrivateGameState(); // Private Game State
 
     this.onMessage(MOVE, (client, message) =>
         this.state.moveController(client, message.cell_id));
@@ -52,11 +50,9 @@ export class XORoom extends Room {
     if (options.type !== SPECTATOR && options.type !== PLAYER) {
       throw new Error(ERROR_INVALID_TYPE);
     } else if (options.type === SPECTATOR) {
-      this.state.joinAsSpectator('Spectator A');
-      this.state.joinAsSpectator('Spectator B');
+      this.state.joinAsSpectator(client, 'Spectator A');
     } else {
       this.state.joinAsPlayer(client, 'Any_Name');
-      this.privateState.joinGame(client, 'Any_Name');
     }
 
     JOINED(this.ROOM_NAME);
@@ -77,7 +73,6 @@ export class XORoom extends Room {
       }
     }
 
-    this.privateState.leaveGame(client);
     this.state.leaveGame(client);
     // redisClient.del(username);
     LEFT(this.ROOM_NAME);

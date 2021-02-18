@@ -1,9 +1,19 @@
-import {ArraySchema, defineTypes, MapSchema, Schema} from '@colyseus/schema';
-import {PublicPlayerState} from './PublicPlayerState.mjs';
+import {
+  ArraySchema,
+  defineTypes,
+  filter, filterChildren,
+  MapSchema,
+  Schema
+} from '@colyseus/schema';
+import {PlayerState} from './PlayerState.mjs';
 import {SpectatorState} from './SpectatorState.mjs';
 import {GameStateHandler} from "./GameStateHandler.mjs";
 import {ServerError} from "colyseus";
 import {ReservedSeatState} from "./ReservedSeatState.mjs";
+import {
+  playersFiltering,
+  spectatorsFiltering
+} from "./filters/GameStateFilters.mjs";
 
 const SPECTATOR = 'SPECTATOR';
 const PLAYER = 'PLAYER';
@@ -31,7 +41,7 @@ class GameState extends Schema {
     if (this.isFullPlayers() === true) {
       client.send(ERROR_MESSAGE, ERROR_NO_SPACE);
     } else {
-      this.players.push(new PublicPlayerState(client.sessionId, name));
+      this.players.push(new PlayerState(client.sessionId, name));
       this.numOfPlayers++;
     }
   }
@@ -40,7 +50,7 @@ class GameState extends Schema {
     if (this.isFullSpectators() === true) {
       client.send(ERROR_MESSAGE, ERROR_NO_SPACE);
     } else {
-      this.spectators.push(new SpectatorState(name));
+      this.spectators.push(new SpectatorState(client.sessionId, name));
       this.numOfSpectators++;
     }
   }
@@ -139,7 +149,7 @@ class GameState extends Schema {
 
 defineTypes(GameState, {
   gameStateHandler: GameStateHandler,
-  players: [PublicPlayerState],
+  players: [PlayerState],
   spectators: [SpectatorState],
   reservedSeats: {map: ReservedSeatState},
   numOfPlayers: "int8",
@@ -147,5 +157,8 @@ defineTypes(GameState, {
   maxNumOfPlayers: "int8",
   maxNumOfSpectators: "int8",
 });
+
+filterChildren(playersFiltering.playersFilter)(GameState.prototype, playersFiltering.PLAYERS);
+filterChildren(spectatorsFiltering.spectatorsFilter)(GameState.prototype, spectatorsFiltering.SPECTATORS);
 
 export {GameState};
