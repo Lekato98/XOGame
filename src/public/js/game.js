@@ -1,21 +1,17 @@
-const host = window.document.location.host.replace(/:.*/, '');
-const client = new Colyseus.Client(location.protocol.replace("http", "ws") + "//" + host + (location.port ? ':' + location.port : ''));
+const client = new Colyseus.Client(getServer());
 const rematchBtn = document.querySelector('#rematch');
 const leaveBtn = document.querySelector('#leave');
 
 const MOVE = 'MOVE';
 const REMATCH = 'REMATCH';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
+const USER = 'user';
 
 async function joinGame(event) {
   try {
-    const username = window.prompt('Enter your username', 'username');
+    const username = getUser();
     const res = await fetch(`/player/${username}`, {
-          headers: {
-            'Content-Type':
-                'application/json'
-          }
-          ,
+      headers: {'Content-Type': 'application/json', user: username},
           method: 'GET',
         }
     );
@@ -36,8 +32,6 @@ function leaveGame(room) {
     window.location.replace('/');
   })
 }
-
-const joinGamePromise = joinGame();
 
 function prepareRoomListeners(room, joinType) {
   room.onStateChange.once((state) => {
@@ -115,3 +109,9 @@ function gameOver(state) {
   }
   alert(message);
 }
+
+function main() {
+  joinGame().catch(err => console.error(err));
+}
+
+main();

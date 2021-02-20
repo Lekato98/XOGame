@@ -11,6 +11,8 @@ export function connectRedis() {
     console.log('Redis Connected Successfully');
   });
 
+  client.flushall();
+
   return client;
 }
 

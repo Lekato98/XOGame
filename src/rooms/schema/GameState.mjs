@@ -14,6 +14,7 @@ import {
   playersFiltering,
   spectatorsFiltering
 } from "./filters/GameStateFilters.mjs";
+import {redisClient} from "../../utils/redis.mjs";
 
 const SPECTATOR = 'SPECTATOR';
 const PLAYER = 'PLAYER';
@@ -37,20 +38,20 @@ class GameState extends Schema {
     this.refreshGameState();
   }
 
-  joinAsPlayer(client, name) {
+  joinAsPlayer(client, username) {
     if (this.isFullPlayers() === true) {
       client.send(ERROR_MESSAGE, ERROR_NO_SPACE);
     } else {
-      this.players.push(new PlayerState(client.sessionId, name));
+      this.players.push(new PlayerState(client.sessionId, username));
       this.numOfPlayers++;
     }
   }
 
-  joinAsSpectator(client, name) {
+  joinAsSpectator(client, username) {
     if (this.isFullSpectators() === true) {
       client.send(ERROR_MESSAGE, ERROR_NO_SPACE);
     } else {
-      this.spectators.push(new SpectatorState(client.sessionId, name));
+      this.spectators.push(new SpectatorState(client.sessionId, username));
       this.numOfSpectators++;
     }
   }
@@ -60,9 +61,13 @@ class GameState extends Schema {
     const spectatorPosition = this.getSpectatorPosition(client);
 
     if (playerPosition !== -1) {
+      redisClient.del(this.players[playerPosition].username);
       this.players.splice(playerPosition, 1);
+      this.numOfPlayers--;
     } else if (spectatorPosition !== -1) {
+      redisClient.del(this.spectators[spectatorPosition].username);
       this.spectators.splice(spectatorPosition, 1);
+      this.numOfSpectators--;
     } else {
       client.send(ERROR_MESSAGE, ERROR_UNKNOWN_PLAYER);
     }

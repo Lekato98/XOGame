@@ -1,30 +1,31 @@
-const host = window.document.location.host.replace(/:.*/, '');
-const client = new Colyseus.Client(location.protocol.replace("http", "ws") + "//" + host + (location.port ? ':' + location.port : ''));
 const createBtn = document.querySelector('#create');
 const joinBtn = document.querySelector('#join');
-const rematchBtn = document.querySelector('#rematch');
 
 const MOVE = 'MOVE';
 const REMATCH = 'REMATCH';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
+const USER = 'user';
+const PLAYER = 'PLAYER';
+const SPECTATOR = 'SPECTATOR';
 
 createBtn.addEventListener('click', create);
 joinBtn.addEventListener('click', joinGame);
 
 async function create() {
   try {
-    const username = window.prompt('Enter your username plz', 'username');
     const type = window.prompt('Join as (Player, Spectator)',
-        'PLAYER').toUpperCase();
+        PLAYER).toUpperCase();
+    const username = getUser();
     const info = {
       username: username,
-      type: type
+      type: type,
     };
 
-    let get = await fetch("/game/create", {
-      headers: {'Content-Type': 'application/json'},
+    const get = await fetch("/game/create", {
+      headers: {'Content-Type': 'application/json', user: username},
       method: 'POST',
       body: JSON.stringify(info),
+
     });
 
     const {seat} = await get.json();
@@ -37,17 +38,18 @@ async function create() {
 
 async function joinGame(event) {
   try {
-    const username = window.prompt('Enter your username plz', 'username');
+    const username = getUser();
     const type = window.prompt('Join as (Player, Spectator)',
-        'PLAYER').toUpperCase();
+        PLAYER).toUpperCase();
 
     const room_id = document.querySelector('#room_id').value;
     const info = {
       username: username,
       type: type
     };
-    let get = await fetch(`/game/join/${room_id}`, {
-      headers: {'Content-Type': 'application/json'},
+
+    const get = await fetch(`/game/join/${room_id}`, {
+      headers: {'Content-Type': 'application/json', user: username},
       method: 'POST',
       body: JSON.stringify(info),
     });
@@ -58,3 +60,14 @@ async function joinGame(event) {
     console.error(err);
   }
 }
+
+function authorize() {
+  if (localStorage.getItem(USER) !== null) {
+    return;
+  }
+
+  const username = window.prompt('Enter your username', 'username');
+  localStorage.setItem(USER, username);
+}
+
+authorize();

@@ -50,9 +50,9 @@ export class XORoom extends Room {
     if (options.type !== SPECTATOR && options.type !== PLAYER) {
       throw new Error(ERROR_INVALID_TYPE);
     } else if (options.type === SPECTATOR) {
-      this.state.joinAsSpectator(client, 'Spectator A');
+      this.state.joinAsSpectator(client, options.username);
     } else {
-      this.state.joinAsPlayer(client, 'Any_Name');
+      this.state.joinAsPlayer(client, options.username);
     }
 
     JOINED(this.ROOM_NAME);
@@ -74,7 +74,6 @@ export class XORoom extends Room {
     }
 
     this.state.leaveGame(client);
-    // redisClient.del(username);
     LEFT(this.ROOM_NAME);
   }
 

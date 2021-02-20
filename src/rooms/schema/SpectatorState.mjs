@@ -1,24 +1,24 @@
 import {defineTypes, Schema} from '@colyseus/schema';
 
 class SpectatorState extends Schema {
-  constructor(sessionId, name) {
+  constructor(sessionId, username) {
     super();
     this.sessionId = sessionId;
-    this.name = name;
+    this.username = username;
   }
 
-  setName(name) {
-    this.name = name;
+  setUsername(username) {
+    this.username = username;
   }
 
-  getName() {
-    return this.name;
+  getUsername() {
+    return this.username;
   }
 }
 
 defineTypes(SpectatorState, {
   sessionId: 'string',
-  name: 'string',
+  username: 'string',
 });
 
 export {SpectatorState};

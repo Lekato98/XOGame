@@ -1,10 +1,10 @@
 import {defineTypes, Schema} from '@colyseus/schema';
 
 class PlayerState extends Schema {
-  constructor(sessionId, name) {
+  constructor(sessionId, username) {
     super();
     this.sessionId = sessionId;
-    this.name = name;
+    this.username = username;
   }
 
   setSessionId(sessionId) {
@@ -15,12 +15,12 @@ class PlayerState extends Schema {
     return this.sessionId;
   }
 
-  setName(name) {
-    this.name = name;
+  setUsername(username) {
+    this.username = username;
   }
 
-  getName() {
-    return this.name;
+  getUsername() {
+    return this.username;
   }
 
   equals(sessionId) {
@@ -30,7 +30,7 @@ class PlayerState extends Schema {
 
 defineTypes(PlayerState, {
   sessionId: 'string',
-  name: 'string',
+  username: 'string',
 });
 
 export {PlayerState};

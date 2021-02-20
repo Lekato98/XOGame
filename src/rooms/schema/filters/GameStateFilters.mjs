@@ -3,12 +3,12 @@
 // structures in the process of decision whether this value is going to be
 // synced or not.
 
-function playersFilter(client, key, value, root) {
-  return client.sessionId === value.sessionId;
+function playersFilter(client, key, player, root) {
+  return client.sessionId === player.sessionId;
 }
 
-function spectatorsFilter(client, key, value, root) {
-  return client.sessionId === value.sessionId;
+function spectatorsFilter(client, key, spectator, root) {
+  return client.sessionId === spectator.sessionId;
 }
 
 const playersFiltering = {
