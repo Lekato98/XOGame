@@ -36,7 +36,7 @@ async function create() {
   }
 }
 
-async function joinGame(event) {
+async function joinGame() {
   try {
     const username = getUser();
     const type = window.prompt('Join as (Player, Spectator)',

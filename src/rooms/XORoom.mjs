@@ -6,16 +6,18 @@ import {
   FAILED,
   JOINED,
   LEFT,
-  RECONNECT,
   RECONNECTED,
   REMOVED,
   RESERVING,
+  TRYING_TO_RECONNECT,
   UNAUTHORIZED,
 } from '../utils/logs.mjs';
+import {RoomException} from "../exceptions/RoomException.mjs";
 
 const ROOM_NAME = 'XORoom';
 
 const ERROR_INVALID_TYPE = 'INVALID TYPE';
+const ERROR_NO_SPACE = 'NO SPACE';
 
 const RECONNECTION_TIME = 10; // in seconds
 const SPECTATOR = 'SPECTATOR';
@@ -33,26 +35,27 @@ export class XORoom extends Room {
 
     this.onMessage(MOVE, (client, message) =>
         this.state.moveController(client, message.cell_id));
-
     this.onMessage(REMATCH, () => this.state.rematch());
 
     CREATED(this.ROOM_NAME);
   }
 
-  onAuth(client, options, request) {
+  onAuth(client, clientOptions, request) {
     UNAUTHORIZED(ROOM_NAME);
     AUTHORIZED(ROOM_NAME);
     return 'authorized';
   }
 
-  onJoin(client, options, auth) {
+  onJoin(client, clientOptions, auth) {
     this.state.checkOut(this.reservedSeats);
-    if (options.type !== SPECTATOR && options.type !== PLAYER) {
+    if (clientOptions.type !== SPECTATOR && clientOptions.type !== PLAYER) {
       throw new Error(ERROR_INVALID_TYPE);
-    } else if (options.type === SPECTATOR) {
-      this.state.joinAsSpectator(client, options.username);
+    } else if (this.isFull(clientOptions.type)) {
+      throw new Error(ERROR_NO_SPACE);
+    } else if (clientOptions.type === SPECTATOR) {
+      this.state.joinAsSpectator(client, clientOptions.username);
     } else {
-      this.state.joinAsPlayer(client, options.username);
+      this.state.joinAsPlayer(client, clientOptions.username);
     }
 
     JOINED(this.ROOM_NAME);
@@ -61,7 +64,7 @@ export class XORoom extends Room {
   async onLeave(client, consented) {
     if (consented === false) {
       try {
-        RECONNECT(this.ROOM_NAME);
+        TRYING_TO_RECONNECT(this.ROOM_NAME);
         await this.allowReconnection(client, RECONNECTION_TIME);
         RECONNECTED(this.ROOM_NAME);
         return;
@@ -84,7 +87,7 @@ export class XORoom extends Room {
       return this.state.isFullSpectators();
     }
 
-    return true;
+    throw RoomException(ERROR_INVALID_TYPE);
   }
 
   onReserve(sessionId) {

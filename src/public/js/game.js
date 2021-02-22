@@ -6,12 +6,13 @@ const MOVE = 'MOVE';
 const REMATCH = 'REMATCH';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
 const USER = 'user';
+const PLAYER = 'PLAYER';
 
-async function joinGame(event) {
+async function joinGame() {
   try {
     const username = getUser();
     const res = await fetch(`/player/${username}`, {
-      headers: {'Content-Type': 'application/json', user: username},
+          headers: {'Content-Type': 'application/json', user: username},
           method: 'GET',
         }
     );
@@ -70,14 +71,14 @@ function prepareRoomListeners(room, joinType) {
 
   leaveGame(room);
 
-  if (joinType == 'PLAYER') {
+  if (joinType === PLAYER) {
     gridCell(room);
     rematch(room);
   }
 }
 
 function rematch(room) {
-  rematchBtn.addEventListener('click', (event) => {
+  rematchBtn.addEventListener('click', () => {
     room.send(REMATCH);
   });
 }
@@ -85,7 +86,7 @@ function rematch(room) {
 function gridCell(room) {
   const cells = Array.from(document.querySelectorAll('td'));
   cells.map((cell, index) => {
-    cell.addEventListener('click', (e) => {
+    cell.addEventListener('click', () => {
       room.send(MOVE, {cell_id: index});
     });
   });
@@ -99,7 +100,7 @@ function setGrid(grid) {
 }
 
 function gameOver(state) {
-  let message = '';
+  let message;
   if (state.gameStateHandler.result === 'DRAW') {
     message = 'DRAW';
   } else {

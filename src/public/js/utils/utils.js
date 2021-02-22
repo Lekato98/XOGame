@@ -1,6 +1,7 @@
 function getServer() {
   const host = window.document.location.host.replace(/:.*/, '');
-  return location.protocol.replace("http", "ws") + "//" + host + (location.port ? ':'
+  return location.protocol.replace("http", "ws") + "//" + host + (location.port
+      ? ':'
       + location.port : '')
 }
 

@@ -6,14 +6,6 @@ class SpectatorState extends Schema {
     this.sessionId = sessionId;
     this.username = username;
   }
-
-  setUsername(username) {
-    this.username = username;
-  }
-
-  getUsername() {
-    return this.username;
-  }
 }
 
 defineTypes(SpectatorState, {

@@ -7,22 +7,6 @@ class PlayerState extends Schema {
     this.username = username;
   }
 
-  setSessionId(sessionId) {
-    this.sessionId = sessionId;
-  }
-
-  getSessionId() {
-    return this.sessionId;
-  }
-
-  setUsername(username) {
-    this.username = username;
-  }
-
-  getUsername() {
-    return this.username;
-  }
-
   equals(sessionId) {
     return this.sessionId === sessionId;
   }

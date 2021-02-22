@@ -97,10 +97,12 @@ export class GameStateHandler extends Schema {
   }
 
   checkDiagonals() {
-    if ((this.grid[0] !== DEFAULT_GRID_VALUE && this.grid[0] === this.grid[4]
-        && this.grid[0] === this.grid[8]) ||
-        (this.grid[2] !== DEFAULT_GRID_VALUE && this.grid[2] === this.grid[4]
-            && this.grid[2] === this.grid[6])) {
+    if (this.grid[0] !== DEFAULT_GRID_VALUE && this.grid[0] === this.grid[4]
+        && this.grid[0] === this.grid[8]) {
+      return true
+    } else if (this.grid[2] !== DEFAULT_GRID_VALUE &&
+        this.grid[2] === this.grid[4]
+        && this.grid[2] === this.grid[6]) {
       return true;
     }
 

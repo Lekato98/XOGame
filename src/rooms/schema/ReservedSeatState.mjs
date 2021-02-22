@@ -5,14 +5,6 @@ class ReservedSeatState extends Schema {
     super();
     this.type = options.type;
   }
-
-  setType(type) {
-    this.type = type;
-  }
-
-  getType() {
-    return this.type;
-  }
 }
 
 defineTypes(ReservedSeatState, {

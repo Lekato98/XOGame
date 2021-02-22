@@ -49,6 +49,6 @@ app.get('/player/:id', async (req, res) => {
   res.json(userData);
 });
 
-gameServer.listen(PORT);
+gameServer.listen(PORT).catch(err => console.error(err));
 
 console.log(`Listening on localhost:${PORT}`);

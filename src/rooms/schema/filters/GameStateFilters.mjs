@@ -11,16 +11,12 @@ function spectatorsFilter(client, key, spectator, root) {
   return client.sessionId === spectator.sessionId;
 }
 
-const playersFiltering = {
-  playersFilter: playersFilter,
+const gameStateFilter = {
   PLAYERS: 'players',
-}
-
-const spectatorsFiltering = {
-  spectatorsFilter: spectatorsFilter,
   SPECTATORS: 'spectators',
+  playersFilter: playersFilter,
+  spectatorsFilter: spectatorsFilter,
 }
 export {
-  playersFiltering,
-  spectatorsFiltering
+  gameStateFilter,
 }

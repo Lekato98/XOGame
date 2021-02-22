@@ -1,7 +1,7 @@
 import {
   ArraySchema,
   defineTypes,
-  filter, filterChildren,
+  filterChildren,
   MapSchema,
   Schema
 } from '@colyseus/schema';
@@ -10,10 +10,7 @@ import {SpectatorState} from './SpectatorState.mjs';
 import {GameStateHandler} from "./GameStateHandler.mjs";
 import {ServerError} from "colyseus";
 import {ReservedSeatState} from "./ReservedSeatState.mjs";
-import {
-  playersFiltering,
-  spectatorsFiltering
-} from "./filters/GameStateFilters.mjs";
+import {gameStateFilter,} from "./filters/GameStateFilters.mjs";
 import {redisClient} from "../../utils/redis.mjs";
 
 const SPECTATOR = 'SPECTATOR';
@@ -163,7 +160,9 @@ defineTypes(GameState, {
   maxNumOfSpectators: "int8",
 });
 
-filterChildren(playersFiltering.playersFilter)(GameState.prototype, playersFiltering.PLAYERS);
-filterChildren(spectatorsFiltering.spectatorsFilter)(GameState.prototype, spectatorsFiltering.SPECTATORS);
+filterChildren(gameStateFilter.playersFilter)(GameState.prototype,
+    gameStateFilter.PLAYERS);
+filterChildren(gameStateFilter.spectatorsFilter)(GameState.prototype,
+    gameStateFilter.SPECTATORS);
 
 export {GameState};
