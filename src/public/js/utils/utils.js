@@ -5,6 +5,8 @@ function getServer() {
       + location.port : '')
 }
 
+console.log(getServer());
+
 function getUser() {
   return localStorage.getItem(USER);
 }
