@@ -3,9 +3,9 @@ import {
   createGame,
   inGame,
   joinGame,
-  joinGameById
-} from "../controllers/gameController/gameController.mjs";
-import {checkPlayerStatus} from "../middleware/playerStatus.mjs";
+  joinGameById,
+} from '../controllers/gameController/gameController.mjs';
+import {checkPlayerStatus} from '../middleware/playerStatus.mjs';
 
 const router = Router();
 

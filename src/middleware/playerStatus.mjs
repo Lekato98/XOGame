@@ -13,6 +13,6 @@ const checkPlayerStatus = async (req, res, next) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
-export {checkPlayerStatus}
+export {checkPlayerStatus};

@@ -21,7 +21,7 @@ async function create() {
       type: type,
     };
 
-    const get = await fetch("/game/create", {
+    const get = await fetch('/game/create', {
       headers: {'Content-Type': 'application/json', user: username},
       method: 'POST',
       body: JSON.stringify(info),
@@ -45,7 +45,7 @@ async function joinGame() {
     const room_id = document.querySelector('#room_id').value;
     const info = {
       username: username,
-      type: type
+      type: type,
     };
 
     const get = await fetch(`/game/join/${room_id}`, {

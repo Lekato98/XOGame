@@ -1,6 +1,6 @@
-import {matchMaker} from "colyseus";
-import {redisClient} from "../../utils/redis.mjs";
-import {RoomException} from "../../exceptions/RoomException.mjs";
+import {matchMaker} from 'colyseus';
+import {redisClient} from '../../utils/redis.mjs';
+import {RoomException} from '../../exceptions/RoomException.mjs';
 
 const XO_ROOM = 'XORoom';
 const IS_FULL = 'isFull';
@@ -20,7 +20,7 @@ async function joinRoomById(roomId, clientOptions) {
     status: IN_GAME,
     seat: seat,
     joinType: clientOptions.type,
-  }
+  };
 
   await redisClient.set(clientOptions.username, JSON.stringify(userData));
   await matchMaker.remoteRoomCall(seat.room.roomId, ON_RESERVE,
@@ -60,5 +60,5 @@ async function getAvailableRoom(clientOptions) {
 export {
   joinRoomById,
   createRoom,
-  getAvailableRoom
-}
+  getAvailableRoom,
+};

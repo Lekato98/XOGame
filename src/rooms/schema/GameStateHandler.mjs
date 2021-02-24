@@ -1,4 +1,4 @@
-import {ArraySchema, defineTypes, Schema} from "@colyseus/schema";
+import {ArraySchema, defineTypes, Schema} from '@colyseus/schema';
 
 const DRAW = 'DRAW';
 const DRAW_VALUE = 'D';
@@ -17,30 +17,24 @@ export class GameStateHandler extends Schema {
     this.refreshGameStateHandler();
   }
 
-  moveValidation(value, cellId) {
-    return cellId > -1 && cellId < DEFAULT_GRID_SIZE &&
-        this.isGameOver === false &&
-        value === this.turn && this.grid[cellId] === DEFAULT_GRID_VALUE;
+  isValidMove(value, cellId) {
+    return cellId > -1 && cellId < DEFAULT_GRID_SIZE && this.isGameOver
+        === false
+        && value === this.turn && this.grid[cellId] === DEFAULT_GRID_VALUE;
   }
 
   move(value, cellId) {
-    if (this.moveValidation(value, cellId) === true) {
-      this.grid[cellId] = value;
-      if (this.checkIsGameOver() === true) {
-        // do something ...
-      } else {
-        this.nextTurn();
-      }
-
-      return true; // valid move
+    this.grid[cellId] = value;
+    if (this.checkIsGameOver() === true) {
+      // do something ...
+    } else {
+      this.nextTurn();
     }
-
-    return false; // invalid move
   }
 
   checkIsGameOver() {
-    if (this.checkCols() === true || this.checkRows() === true
-        || this.checkDiagonals() === true) {
+    if (this.checkCols() === true || this.checkRows() === true ||
+        this.checkDiagonals() === true) {
       this.gameOver();
       return true;
     } else if (this.checkDraw() === true) {
@@ -77,7 +71,8 @@ export class GameStateHandler extends Schema {
   checkRows() {
     for (let i = 0; i < 7; i += 3) {
       if (this.grid[i] !== DEFAULT_GRID_VALUE && this.grid[i] === this.grid[i
-      + 1] && this.grid[i] === this.grid[i + 2]) {
+          + 1]
+          && this.grid[i] === this.grid[i + 2]) {
         return true;
       }
     }
@@ -88,7 +83,8 @@ export class GameStateHandler extends Schema {
   checkCols() {
     for (let i = 0; i < 3; i++) {
       if (this.grid[i] !== DEFAULT_GRID_VALUE && this.grid[i] === this.grid[i
-      + 3] && this.grid[i] === this.grid[i + 6]) {
+          + 3]
+          && this.grid[i] === this.grid[i + 6]) {
         return true;
       }
     }
@@ -99,9 +95,9 @@ export class GameStateHandler extends Schema {
   checkDiagonals() {
     if (this.grid[0] !== DEFAULT_GRID_VALUE && this.grid[0] === this.grid[4]
         && this.grid[0] === this.grid[8]) {
-      return true
-    } else if (this.grid[2] !== DEFAULT_GRID_VALUE &&
-        this.grid[2] === this.grid[4]
+      return true;
+    } else if (this.grid[2] !== DEFAULT_GRID_VALUE && this.grid[2]
+        === this.grid[4]
         && this.grid[2] === this.grid[6]) {
       return true;
     }
@@ -134,5 +130,5 @@ defineTypes(GameStateHandler, {
   winner: 'string',
   isGameOver: 'boolean',
   turn: 'string',
-  grid: ['string']
+  grid: ['string'],
 });

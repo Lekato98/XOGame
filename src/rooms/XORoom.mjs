@@ -12,7 +12,7 @@ import {
   TRYING_TO_RECONNECT,
   UNAUTHORIZED,
 } from '../utils/logs.mjs';
-import {RoomException} from "../exceptions/RoomException.mjs";
+import {RoomException} from '../exceptions/RoomException.mjs';
 
 const ROOM_NAME = 'XORoom';
 
@@ -69,14 +69,12 @@ export class XORoom extends Room {
         RECONNECTED(this.ROOM_NAME);
         return;
       } catch (err) {
-        if (err !== false) {
-          console.error(err);
-        }
+        console.error(err);
         FAILED(this.ROOM_NAME);
       }
     }
 
-    this.state.leaveGame(client);
+    await this.state.leaveGame(client);
     LEFT(this.ROOM_NAME);
   }
 

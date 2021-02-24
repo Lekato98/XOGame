@@ -3,20 +3,16 @@
 // structures in the process of decision whether this value is going to be
 // synced or not.
 
-function playersFilter(client, key, player, root) {
-  return client.sessionId === player.sessionId;
-}
-
-function spectatorsFilter(client, key, spectator, root) {
-  return client.sessionId === spectator.sessionId;
+function isSameClient(receiverClient, index, client, root) {
+  return receiverClient.sessionId === client.sessionId;
 }
 
 const gameStateFilter = {
   PLAYERS: 'players',
   SPECTATORS: 'spectators',
-  playersFilter: playersFilter,
-  spectatorsFilter: spectatorsFilter,
-}
+  isSameClient,
+};
+
 export {
   gameStateFilter,
-}
+};

@@ -14,11 +14,11 @@ async function joinGame() {
     const res = await fetch(`/player/${username}`, {
           headers: {'Content-Type': 'application/json', user: username},
           method: 'GET',
-        }
+        },
     );
 
     const {seat, joinType} = await res.json();
-    console.log(seat);
+
     const room = await client.consumeSeatReservation(seat);
 
     prepareRoomListeners(room, joinType);
@@ -31,7 +31,7 @@ function leaveGame(room) {
   leaveBtn.addEventListener('click', () => {
     room.leave();
     window.location.replace('/');
-  })
+  });
 }
 
 function prepareRoomListeners(room, joinType) {

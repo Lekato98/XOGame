@@ -1,17 +1,17 @@
 table {
-  margin: 0;
-  position: absolute;
-  border-collapse: collapse;
-  width: 30%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    margin: 0;
+    position: absolute;
+    border-collapse: collapse;
+    width: 30%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 tr, td {
-  border: 1px solid black;
-  padding: 75px;
-  border-collapse: collapse;
-  cursor: pointer;
-  font-size: 50px;
+    border: 1px solid black;
+    padding: 75px;
+    border-collapse: collapse;
+    cursor: pointer;
+    font-size: 50px;
 }
